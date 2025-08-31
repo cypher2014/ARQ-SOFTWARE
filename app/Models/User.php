@@ -2,47 +2,79 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Nombre de la tabla
+     */
+    protected $table = 'users';
+
+    /**
+     * Clave primaria personalizada
+     */
+    protected $primaryKey = 'ID_USER';
+
+    /**
+     * Laravel espera por defecto que la PK sea autoincremental tipo int
+     */
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+    /**
+     * Manejo de timestamps automáticos (CREATED_AT, UPDATED_AT)
+     */
+    public $timestamps = true;
+
+    /**
+     * Campos que se pueden asignar masivamente
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'TYPE_DOCUMENT',
+        'NAME_USER',
+        'LAST_NAME',
+        'EMAIL',
+        'PASSWORD',
+        'USER_PHONE',
+        'USER_ADDRESS',
+        'CITY',
+        'EDIT_DATA',
+        'DELETE_DATA',
+        'VIEW_DATA',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Campos ocultos en serialización
      */
     protected $hidden = [
-        'password',
+        'PASSWORD',
         'remember_token',
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Casts para tipos de datos
      */
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'PASSWORD' => 'hashed',
+            'EDIT_DATA' => 'boolean',
+            'DELETE_DATA' => 'boolean',
+            'VIEW_DATA' => 'boolean',
         ];
     }
+
+    /**
+     * Relación: un usuario puede tener muchas agendas
+     */
+    public function agendas()
+    {
+        return $this->hasMany(Agenda::class, 'ID_USER', 'ID_USER');
+    }
 }
+
