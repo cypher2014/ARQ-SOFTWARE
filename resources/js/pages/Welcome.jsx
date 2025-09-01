@@ -15,7 +15,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
     return (
         <>
-         
+         <h1>Bienvenido</h1>
+         <DangerButton on>Iniciar Sesion</DangerButton>
         </>
     );
 }
