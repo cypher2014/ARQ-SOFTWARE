@@ -7,10 +7,15 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
+        type_document: '',
+        name_user: '',
+        last_name: '',
         email: '',
         password: '',
         password_confirmation: '',
+        user_phone: '',
+        user_address: '',
+        city: '',
     });
 
     const submit = (e) => {
