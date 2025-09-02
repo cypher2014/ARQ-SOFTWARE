@@ -32,6 +32,10 @@ export default function Register() {
 
             <form onSubmit={submit} className="space-y-5">
                 {/* Tipo de Documento */}
+
+                <div>
+                    <h1 className='text-center'>Registrarse</h1>
+                </div>
                 <div>
                     <InputLabel htmlFor="type_document" value="Tipo de Documento" />
 
