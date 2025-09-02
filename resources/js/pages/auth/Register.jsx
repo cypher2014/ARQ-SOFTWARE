@@ -9,7 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         type_document: '',
-        name: '',          // ✅ corregido (antes tenías name_user)
+        name_user: '',      // 🔹 corregido
         last_name: '',
         email: '',
         password: '',
@@ -82,20 +82,20 @@ export default function Register() {
 
                 {/* Nombre */}
                 <div className="mt-4">
-                    <InputLabel htmlFor="name" value="Nombres" />
+                    <InputLabel htmlFor="name_user" value="Nombres" />
 
                     <TextInput
-                        id="name"
+                        id="name_user"
                         type="text"
-                        name="name"
-                        value={data.name}
+                        name="name_user"
+                        value={data.name_user}
                         className="mt-1 block w-full"
                         autoComplete="given-name"
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={(e) => setData('name_user', e.target.value)}
                         required
                     />
 
-                    <InputError message={errors.name} className="mt-2" />
+                    <InputError message={errors.name_user} className="mt-2" />
                 </div>
 
                 {/* Apellidos */}
@@ -231,5 +231,6 @@ export default function Register() {
         </GuestLayout>
     );
 }
+
 
 
