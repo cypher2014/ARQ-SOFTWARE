@@ -40,7 +40,7 @@ export default function Welcome({ auth }) {
 
     return (
         <>
-            <Head title="Bienvenido" />
+            <Head title="Dyamix" />
 
             <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 px-6 py-12">
                 <motion.h1
