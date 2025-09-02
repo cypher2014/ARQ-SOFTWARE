@@ -15,7 +15,6 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('login'), {
             onFinish: () => reset('password'),
         });
@@ -23,7 +22,7 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title="Iniciar Sesión" />
 
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">
@@ -31,7 +30,14 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             )}
 
-            <form onSubmit={submit}>
+            <form
+                onSubmit={submit}
+                className="bg-white p-8 shadow-lg rounded-[20px] max-w-md mx-auto"
+            >
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+                    Bienvenido
+                </h2>
+
                 <div>
                     <InputLabel htmlFor="email" value="Usuario" />
 
@@ -40,10 +46,11 @@ export default function Login({ status, canResetPassword }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full rounded-[20px]"
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
+                        required
                     />
 
                     <InputError message={errors.email} className="mt-2" />
@@ -57,13 +64,13 @@ export default function Login({ status, canResetPassword }) {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full rounded-[20px]"
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
+                        required
                     />
 
                     <InputError message={errors.password} className="mt-2" />
-                    
                 </div>
 
                 <div className="mt-4 block">
@@ -81,21 +88,25 @@ export default function Login({ status, canResetPassword }) {
                     </label>
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
+                <div className="mt-6 flex items-center justify-between">
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="text-sm text-gray-600 underline hover:text-gray-900"
                         >
-                            Olvidaste tu contraseña?
+                            ¿Olvidaste tu contraseña?
                         </Link>
                     )}
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Iniciar Sesion
+                    <PrimaryButton
+                        className="ms-4 bg-green-600 hover:bg-green-700 text-white rounded-[20px] px-6 py-2"
+                        disabled={processing}
+                    >
+                        Iniciar Sesión
                     </PrimaryButton>
                 </div>
             </form>
         </GuestLayout>
     );
 }
+
