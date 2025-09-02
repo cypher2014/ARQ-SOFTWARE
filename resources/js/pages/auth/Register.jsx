@@ -1,3 +1,4 @@
+import Dropdown from '@/Components/Dropdown';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -28,28 +29,93 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title="Registrarse" />
 
             <form onSubmit={submit}>
+                
                 <div>
-                    <InputLabel htmlFor="name" value="Nombre" />
+                    <InputLabel htmlFor="type_document" value="Tipo de Documento" />
+
+                    <Dropdown>
+                        <Dropdown.Trigger>
+                            <button
+                                type="button"
+                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-left text-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            >
+                                {data.type_document || 'Seleccione un tipo de documento'}
+                            </button>
+                        </Dropdown.Trigger>
+
+                        <Dropdown.Content contentClasses="bg-white w-48">
+                            <Dropdown.Link
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setData('type_document', 'CC');
+                                }}
+                            >
+                                Cédula de Ciudadanía (CC)
+                            </Dropdown.Link>
+                            <Dropdown.Link
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setData('type_document', 'TI');
+                                }}
+                            >
+                                Tarjeta de Identidad (TI)
+                            </Dropdown.Link>
+                            <Dropdown.Link
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setData('type_document', 'CE');
+                                }}
+                            >
+                                Cédula de Extranjería (CE)
+                            </Dropdown.Link>
+                        </Dropdown.Content>
+                    </Dropdown>
+
+                    <InputError message={errors.type_document} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="email" value="Nombres" />
 
                     <TextInput
                         id="name"
+                        type="text"
                         name="name"
                         value={data.name}
                         className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
+                        autoComplete="username"
                         onChange={(e) => setData('name', e.target.value)}
                         required
                     />
 
-                    <InputError message={errors.name} className="mt-2" />
+                    <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Correo Electronico" />
+                    <InputLabel htmlFor="last_name" value="Apellidos" />
+
+                    <TextInput
+                        id="last_name"
+                        type="text"
+                        name="last_name"
+                        value={data.last_name}
+                        className="mt-1 block w-full"
+                        autoComplete="last_name"
+                        onChange={(e) => setData('last_name', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.email} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="email" value="Correo Electrónico" />
 
                     <TextInput
                         id="email"
@@ -64,6 +130,24 @@ export default function Register() {
 
                     <InputError message={errors.email} className="mt-2" />
                 </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="user_phone" value="Telefono" />
+
+                    <TextInput
+                        id="user_phone"
+                        type="number"
+                        name="user_phone"
+                        value={data.user_phone}
+                        className="mt-1 block w-full"
+                        autoComplete="user_phone"
+                        onChange={(e) => setData('user_phone', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.email} className="mt-2" />
+                </div>
+                
 
                 <div className="mt-4">
                     <InputLabel htmlFor="password" value="Contraseña" />
@@ -112,10 +196,10 @@ export default function Register() {
                         href={route('login')}
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                      ¿Ya te has registrado?
+                        ¿Ya te has registrado?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton className="ms-4 rounded-lg" disabled={processing}>
                         Registrarse
                     </PrimaryButton>
                 </div>
@@ -123,3 +207,4 @@ export default function Register() {
         </GuestLayout>
     );
 }
+
