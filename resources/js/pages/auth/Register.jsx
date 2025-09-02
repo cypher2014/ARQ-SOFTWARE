@@ -9,7 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         type_document: '',
-        name_user: '',
+        name: '',          // ✅ corregido (antes tenías name_user)
         last_name: '',
         email: '',
         password: '',
@@ -32,7 +32,7 @@ export default function Register() {
             <Head title="Registrarse" />
 
             <form onSubmit={submit}>
-                
+                {/* Dropdown Tipo de Documento */}
                 <div>
                     <InputLabel htmlFor="type_document" value="Tipo de Documento" />
 
@@ -80,8 +80,9 @@ export default function Register() {
                     <InputError message={errors.type_document} className="mt-2" />
                 </div>
 
+                {/* Nombre */}
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Nombres" />
+                    <InputLabel htmlFor="name" value="Nombres" />
 
                     <TextInput
                         id="name"
@@ -89,14 +90,15 @@ export default function Register() {
                         name="name"
                         value={data.name}
                         className="mt-1 block w-full"
-                        autoComplete="username"
+                        autoComplete="given-name"
                         onChange={(e) => setData('name', e.target.value)}
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.name} className="mt-2" />
                 </div>
 
+                {/* Apellidos */}
                 <div className="mt-4">
                     <InputLabel htmlFor="last_name" value="Apellidos" />
 
@@ -106,14 +108,15 @@ export default function Register() {
                         name="last_name"
                         value={data.last_name}
                         className="mt-1 block w-full"
-                        autoComplete="last_name"
+                        autoComplete="family-name"
                         onChange={(e) => setData('last_name', e.target.value)}
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.last_name} className="mt-2" />
                 </div>
 
+                {/* Email */}
                 <div className="mt-4">
                     <InputLabel htmlFor="email" value="Correo Electrónico" />
 
@@ -123,7 +126,7 @@ export default function Register() {
                         name="email"
                         value={data.email}
                         className="mt-1 block w-full"
-                        autoComplete="username"
+                        autoComplete="email"
                         onChange={(e) => setData('email', e.target.value)}
                         required
                     />
@@ -131,8 +134,9 @@ export default function Register() {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
+                {/* Teléfono */}
                 <div className="mt-4">
-                    <InputLabel htmlFor="user_phone" value="Telefono" />
+                    <InputLabel htmlFor="user_phone" value="Teléfono" />
 
                     <TextInput
                         id="user_phone"
@@ -140,15 +144,33 @@ export default function Register() {
                         name="user_phone"
                         value={data.user_phone}
                         className="mt-1 block w-full"
-                        autoComplete="user_phone"
+                        autoComplete="tel"
                         onChange={(e) => setData('user_phone', e.target.value)}
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.user_phone} className="mt-2" />
                 </div>
-                
 
+                {/* Dirección */}
+                <div className="mt-4">
+                    <InputLabel htmlFor="user_address" value="Dirección de residencia" />
+
+                    <TextInput
+                        id="user_address"
+                        type="text"
+                        name="user_address"
+                        value={data.user_address}
+                        className="mt-1 block w-full"
+                        autoComplete="street-address"
+                        onChange={(e) => setData('user_address', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.user_address} className="mt-2" />
+                </div>
+
+                {/* Password */}
                 <div className="mt-4">
                     <InputLabel htmlFor="password" value="Contraseña" />
 
@@ -166,6 +188,7 @@ export default function Register() {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
+                {/* Confirmar Password */}
                 <div className="mt-4">
                     <InputLabel
                         htmlFor="password_confirmation"
@@ -191,6 +214,7 @@ export default function Register() {
                     />
                 </div>
 
+                {/* Botón */}
                 <div className="mt-4 flex items-center justify-end">
                     <Link
                         href={route('login')}
@@ -207,4 +231,5 @@ export default function Register() {
         </GuestLayout>
     );
 }
+
 
