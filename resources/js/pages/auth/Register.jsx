@@ -21,7 +21,6 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
@@ -31,7 +30,7 @@ export default function Register() {
         <GuestLayout>
             <Head title="Registrarse" />
 
-            <form onSubmit={submit} className="space-y-4">
+            <form onSubmit={submit} className="space-y-5">
                 {/* Tipo de Documento */}
                 <div>
                     <InputLabel htmlFor="type_document" value="Tipo de Documento" />
@@ -40,40 +39,29 @@ export default function Register() {
                         <Dropdown.Trigger>
                             <button
                                 type="button"
-                                className="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-left text-gray-700 shadow-sm focus:border-green-500 focus:ring-2 focus:ring-green-400 sm:text-sm"
+                                className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-left text-gray-700 shadow-sm focus:border-green-500 focus:ring-2 focus:ring-green-400 sm:text-sm"
                             >
                                 {data.type_document || 'Seleccione un tipo de documento'}
                             </button>
                         </Dropdown.Trigger>
 
                         <Dropdown.Content contentClasses="bg-white w-56 rounded-lg shadow-lg">
-                            <Dropdown.Link
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setData('type_document', 'CC');
-                                }}
-                            >
-                                Cédula de Ciudadanía (CC)
-                            </Dropdown.Link>
-                            <Dropdown.Link
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setData('type_document', 'TI');
-                                }}
-                            >
-                                Tarjeta de Identidad (TI)
-                            </Dropdown.Link>
-                            <Dropdown.Link
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setData('type_document', 'CE');
-                                }}
-                            >
-                                Cédula de Extranjería (CE)
-                            </Dropdown.Link>
+                            {[
+                                { value: 'CC', label: 'Cédula de Ciudadanía (CC)' },
+                                { value: 'TI', label: 'Tarjeta de Identidad (TI)' },
+                                { value: 'CE', label: 'Cédula de Extranjería (CE)' },
+                            ].map((doc) => (
+                                <Dropdown.Link
+                                    key={doc.value}
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setData('type_document', doc.value);
+                                    }}
+                                >
+                                    {doc.label}
+                                </Dropdown.Link>
+                            ))}
                         </Dropdown.Content>
                     </Dropdown>
 
@@ -133,7 +121,7 @@ export default function Register() {
                     <InputLabel htmlFor="user_phone" value="Teléfono" />
                     <TextInput
                         id="user_phone"
-                        type="number"
+                        type="tel"
                         name="user_phone"
                         value={data.user_phone}
                         className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-2 focus:ring-green-400"
@@ -212,6 +200,7 @@ export default function Register() {
         </GuestLayout>
     );
 }
+
 
 
 
