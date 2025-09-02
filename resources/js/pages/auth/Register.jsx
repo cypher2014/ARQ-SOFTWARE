@@ -8,6 +8,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
+        id_user: '',
         type_document: '',
         name_user: '',
         last_name: '',
@@ -69,10 +70,25 @@ export default function Register() {
                         </Dropdown.Content>
                     </Dropdown>
 
-                    <InputError message={errors.type_document} className="mt-2" />
+                    <InputError message={errors.id} className="mt-2" />
+                </div>
+                <div>
+                    <InputLabel htmlFor="name_user" value="Numero de documento" />
+                    <TextInput
+                        id="id_user"
+                        type="text"
+                        name="id_user"
+                        value={data.id_user}
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-2 focus:ring-green-400"
+                        autoComplete="given-name"
+                        onChange={(e) => setData('id_user', e.target.value)}
+                        required
+                    />
+                    <InputError message={errors.id_user} className="mt-2" />
                 </div>
 
                 {/* Nombre */}
+            
                 <div>
                     <InputLabel htmlFor="name_user" value="Nombres" />
                     <TextInput
@@ -150,6 +166,20 @@ export default function Register() {
                         required
                     />
                     <InputError message={errors.user_address} className="mt-2" />
+                </div>
+                <div>
+                    <InputLabel htmlFor="icy" value="Ciudad" />
+                    <TextInput
+                        id="city"
+                        type="text"
+                        name="city"
+                        value={data.city}
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-2 focus:ring-green-400"
+                        autoComplete="street-address"
+                        onChange={(e) => setData('city', e.target.value)}
+                        required
+                    />
+                    <InputError message={errors.city} className="mt-2" />
                 </div>
 
                 {/* Contraseña */}
