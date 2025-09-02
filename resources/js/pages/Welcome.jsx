@@ -1,5 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import DangerButton from '@/components/DangerButton';
+import NavLink from '@/components/NavLink';
+import Modal from '@/components/Modal';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const handleImageError = () => {
@@ -15,8 +17,10 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
     return (
         <>
+        <Modal>Hola</Modal>
+        <NavLink>Hola</NavLink>
          <h1>Bienvenido</h1>
-         <DangerButton on>Iniciar Sesion</DangerButton>
+         <DangerButton>Iniciar Sesion</DangerButton>
         </>
     );
 }
