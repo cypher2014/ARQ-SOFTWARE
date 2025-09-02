@@ -11,7 +11,7 @@ class User extends Authenticatable
 
     protected $table = 'users'; // por si el nombre no coincide
 
-    protected $primaryKey = 'id_user'; // ya que tu PK no se llama "id"
+    protected $primaryKey = 'id_user'; 
 
     protected $fillable = [
         'type_document',
