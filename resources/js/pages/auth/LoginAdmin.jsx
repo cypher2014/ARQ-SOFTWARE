@@ -35,7 +35,7 @@ export default function Login({ status, canResetPassword }) {
                 className="bg-white p-8 shadow-lg rounded-[20px] max-w-md mx-auto"
             >
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-                    Iniciar Sesión
+                    MODULO ADMINISTRADORES
                 </h2>
 
                 <div>

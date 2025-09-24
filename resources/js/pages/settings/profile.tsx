@@ -1,6 +1,7 @@
 // External libraries
 import { Transition } from "@headlessui/react";
 import { Form, Head, Link, usePage } from "@inertiajs/react";
+import { Loader2, UserCircle } from "lucide-react";
 
 // Types
 import type { BreadcrumbItem, SharedData } from "@/types";
@@ -23,7 +24,7 @@ import AppLayout from "@/layouts/app-layout";
 import SettingsLayout from "@/layouts/settings/layout";
 
 const breadcrumbs: BreadcrumbItem[] = [
-  { title: "Profile settings", href: edit().url },
+  { title: "Configuración de perfil", href: edit().url },
 ];
 
 interface ProfileProps {
@@ -36,15 +37,20 @@ export default function Profile({ mustVerifyEmail, status }: ProfileProps) {
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Head title="Profile settings" />
+      <Head title="Configuración de perfil" />
 
       <SettingsLayout>
         <div className="space-y-6">
-          {/* Profile section */}
-          <HeadingSmall
-            title="Profile information"
-            description="Update your name and email address"
-          />
+          {/* Encabezado */}
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-green-100 rounded-xl">
+              <UserCircle className="w-6 h-6 text-[#76b043]" />
+            </div>
+            <HeadingSmall
+              title="Información del perfil"
+              description="Actualiza tu nombre y dirección de correo electrónico"
+            />
+          </div>
 
           <Form
             {...ProfileController.update.form()}
@@ -53,24 +59,23 @@ export default function Profile({ mustVerifyEmail, status }: ProfileProps) {
           >
             {({ processing, recentlySuccessful, errors }) => (
               <>
-                {/* Name */}
+                {/* Nombre */}
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name">Nombre completo</Label>
                   <Input
                     id="name"
                     name="name"
                     defaultValue={auth.user.name}
                     required
                     autoComplete="name"
-                    placeholder="Full name"
-                    className="mt-1 block w-full"
+                    placeholder="Ingresa tu nombre"
                   />
-                  <InputError className="mt-2" message={errors.name} />
+                  <InputError message={errors.name} />
                 </div>
 
-                {/* Email */}
+                {/* Correo */}
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Email address</Label>
+                  <Label htmlFor="email">Correo electrónico</Label>
                   <Input
                     id="email"
                     type="email"
@@ -78,49 +83,62 @@ export default function Profile({ mustVerifyEmail, status }: ProfileProps) {
                     defaultValue={auth.user.email}
                     required
                     autoComplete="username"
-                    placeholder="Email address"
-                    className="mt-1 block w-full"
+                    placeholder="ejemplo@correo.com"
                   />
-                  <InputError className="mt-2" message={errors.email} />
+                  <InputError message={errors.email} />
                 </div>
 
-                {/* Email verification */}
+                {/* Verificación de correo */}
                 {mustVerifyEmail && !auth.user.email_verified_at && (
-                  <div>
-                    <p className="-mt-4 text-sm text-muted-foreground">
-                      Your email address is unverified.{" "}
+                  <div className="rounded-md bg-neutral-50 p-4 text-sm">
+                    <p className="text-neutral-700">
+                      Tu dirección de correo no está verificada.{" "}
                       <Link
                         href={send()}
                         as="button"
-                        className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-current"
+                        className="text-[#76b043] underline underline-offset-4 hover:text-green-700 transition"
                       >
-                        Click here to resend the verification email.
+                        Haz clic aquí para reenviar el correo de verificación.
                       </Link>
                     </p>
 
                     {status === "verification-link-sent" && (
-                      <p className="mt-2 text-sm font-medium text-green-600">
-                        A new verification link has been sent to your email
-                        address.
+                      <p className="mt-2 font-medium text-green-600">
+                        ✅ Se ha enviado un nuevo enlace de verificación a tu correo.
                       </p>
                     )}
                   </div>
                 )}
 
-                {/* Actions */}
+                {/* Acciones */}
                 <div className="flex items-center gap-4">
-                  <Button disabled={processing}>
-                    {processing ? "Saving..." : "Save"}
+                  <Button
+                    type="submit"
+                    disabled={processing}
+                    className="bg-[#76b043] hover:bg-green-700 text-white"
+                  >
+                    {processing ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Guardando...
+                      </>
+                    ) : (
+                      "Guardar cambios"
+                    )}
                   </Button>
 
                   <Transition
                     show={recentlySuccessful}
-                    enter="transition ease-in-out"
-                    enterFrom="opacity-0"
-                    leave="transition ease-in-out"
-                    leaveTo="opacity-0"
+                    enter="transition ease-out duration-300"
+                    enterFrom="opacity-0 translate-y-1"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition ease-in duration-200"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-1"
                   >
-                    <p className="text-sm text-neutral-600">✅ Saved</p>
+                    <p className="text-sm text-green-600 font-medium">
+                      ✅ Cambios guardados correctamente
+                    </p>
                   </Transition>
                 </div>
               </>
@@ -128,9 +146,13 @@ export default function Profile({ mustVerifyEmail, status }: ProfileProps) {
           </Form>
         </div>
 
-        <DeleteUser />
+        {/* Eliminar cuenta */}
+        <div className="border-t pt-6 mt-6">
+          <DeleteUser />
+        </div>
       </SettingsLayout>
     </AppLayout>
   );
 }
+
 
