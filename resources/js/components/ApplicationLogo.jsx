@@ -1,4 +1,4 @@
-import Logo from '../../../public/logo.svg';
+import Logo from '../../../public/logo.png';
 
 export default function ApplicationLogo(props) {
     return (

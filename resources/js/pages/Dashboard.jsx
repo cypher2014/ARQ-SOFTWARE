@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { Package, RefreshCcw, Eye } from "lucide-react";
 
 const cards = [
@@ -27,12 +27,19 @@ const cards = [
 ];
 
 export default function Dashboard() {
+  const { auth } = usePage().props; // sin tipado TS
+
   return (
     <AuthenticatedLayout
       header={
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-          Panel Principal
-        </h2>
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            Bienvenido, <span className="text-indigo-600">{auth.user.name}</span>
+          </h2>
+          <p className="mt-1 text-sm text-gray-600">
+            Este es tu panel principal, gestiona tus solicitudes fácilmente.
+          </p>
+        </div>
       }
     >
       <Head title="Panel Principal" />
@@ -65,5 +72,7 @@ export default function Dashboard() {
     </AuthenticatedLayout>
   );
 }
+
+
 
 
