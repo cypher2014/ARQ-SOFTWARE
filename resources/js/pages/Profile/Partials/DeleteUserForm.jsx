@@ -46,7 +46,7 @@ export default function DeleteUserForm({ className = '' }) {
             {/* Header */}
             <header>
                 <h2 className="text-xl font-semibold text-gray-900">
-                    Eliminar cuenta
+                   
                 </h2>
                 <p className="mt-2 text-sm text-gray-600 leading-relaxed">
                     Una vez que elimines tu cuenta, todos tus recursos y datos
