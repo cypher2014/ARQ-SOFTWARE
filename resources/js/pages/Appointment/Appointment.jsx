@@ -5,7 +5,7 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function SchedulePickup() {
+export default function Appointment() {
     const { data, setData, post, processing, errors, reset } = useForm({
         date_recolection: '',
         status_recolection: 'pendiente', 
@@ -14,7 +14,7 @@ export default function SchedulePickup() {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('agenda.store'), {
+        post(route('appointment.store'), {
             onFinish: () => reset('date_recolection', 'user_message'),
         });
     };

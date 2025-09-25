@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\AgendaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/appointment', [AgendaController::class, 'create'])->name('appointment.create');
+    Route::post('/appointment', [AgendaController::class, 'store'])->name('appointment.store');
+
 require __DIR__.'/auth.php';
+
+});
