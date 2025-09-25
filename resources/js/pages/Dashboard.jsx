@@ -27,14 +27,15 @@ const cards = [
 ];
 
 export default function Dashboard() {
-  const { auth } = usePage().props; // sin tipado TS
+  const { auth } = usePage().props; // props de Inertia con info del user
 
   return (
     <AuthenticatedLayout
       header={
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-            Bienvenido, <span className="text-indigo-600">{auth.user.name}</span>
+            Bienvenido,{" "}
+            <span className="text-indigo-600">{auth.user?.name}</span>
           </h2>
           <p className="mt-1 text-sm text-gray-600">
             Este es tu panel principal, gestiona tus solicitudes fácilmente.
@@ -72,6 +73,8 @@ export default function Dashboard() {
     </AuthenticatedLayout>
   );
 }
+
+
 
 
 

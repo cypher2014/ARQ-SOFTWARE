@@ -6,7 +6,7 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Login({ status, canResetPassword }) {
+export default function LoginAdmin({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -15,14 +15,14 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('login'), {
+        post(route('admin.login.post'), {
             onFinish: () => reset('password'),
         });
     };
 
     return (
         <GuestLayout>
-            <Head title="Iniciar Sesión" />
+            <Head title="Login Administradores" />
 
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">
@@ -35,11 +35,11 @@ export default function Login({ status, canResetPassword }) {
                 className="bg-white p-8 shadow-lg rounded-[20px] max-w-md mx-auto"
             >
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-                    MODULO ADMINISTRADORES
+                    Iniciar Sesion Colaborador
                 </h2>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Usuario" />
+                    <InputLabel htmlFor="email" value="Correo electrónico" />
 
                     <TextInput
                         id="email"
@@ -109,4 +109,5 @@ export default function Login({ status, canResetPassword }) {
         </GuestLayout>
     );
 }
+
 

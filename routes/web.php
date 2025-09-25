@@ -2,9 +2,16 @@
 
 use App\Http\Controllers\User\AgendaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\LoginAdminController; // 👈 Importamos el controlador de admins
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+/*
+|--------------------------------------------------------------------------
+| Rutas de Usuarios (Default Laravel Breeze / Jetstream)
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
