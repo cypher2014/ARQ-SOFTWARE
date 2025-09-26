@@ -32,11 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/appointment', [AgendaController::class, 'create'])->name('appointment.create');
-    Route::post('/appointment', [AgendaController::class, 'store'])->name('appointment.store');
 
-});
 
 require __DIR__.'/auth.php';
 
