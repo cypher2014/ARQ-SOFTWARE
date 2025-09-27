@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  // 📝 Formulario
+  // Formulario
   const { data, setData, post, processing, errors, reset } = useForm({
     DATE_RECOLECTION: "",
     STATUS_RECOLECTION: "OPEN",
@@ -199,6 +199,8 @@ export default function Dashboard() {
     </AuthenticatedLayout>
   );
 }
+
+
 
 
 

@@ -30,7 +30,7 @@ export default function AuthenticatedLayout({ header, children }) {
     };
   }, []);
 
-  // Cuando se abre, enfocar el primer item del menú (mejora accesibilidad)
+  // Cuando se abre, enfocar el primer item del menú (accesibilidad)
   useEffect(() => {
     if (open) {
       setTimeout(() => {
@@ -45,9 +45,39 @@ export default function AuthenticatedLayout({ header, children }) {
       <nav className="bg-white border-b border-gray-200 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo o título */}
-            <div className="flex items-center">
-              <h1 className="text-lg font-bold text-gray-800">Panel Principal</h1>
+            {/* Logo + Links navegación */}
+            <div className="flex items-center space-x-8">
+              <h1 className="text-lg font-bold text-gray-800 whitespace-nowrap">
+                PANEL ADMINISTRATIVO
+              </h1>
+
+              {/* Links principales */}
+              <div className="hidden md:flex space-x-6">
+                <Link
+                  href="/dashboard"
+                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
+                >
+                  Inicio
+                </Link>
+                <Link
+                  href="/solicitudes"
+                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
+                >
+                  Solicitudes
+                </Link>
+                <Link
+                  href="/reportes"
+                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
+                >
+                  Reportes
+                </Link>
+                <Link
+                  href="/configuracion"
+                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
+                >
+                  Configuración
+                </Link>
+              </div>
             </div>
 
             {/* Dropdown usuario */}
@@ -61,10 +91,12 @@ export default function AuthenticatedLayout({ header, children }) {
                 <div className="w-9 h-9 flex items-center justify-center rounded-full bg-indigo-600 text-white">
                   <UserIcon className="h-5 w-5" />
                 </div>
-                <span className="hidden sm:inline">{auth?.user?.name || "Usuario"}</span>
+                <span className="hidden sm:inline">
+                  {auth?.user?.name || "Mi Perfil"}
+                </span>
               </button>
 
-              {/* Menú con Transition para animar entrada/salida */}
+              {/* Menú Dropdown */}
               <Transition
                 as={Fragment}
                 show={open}
@@ -120,7 +152,9 @@ export default function AuthenticatedLayout({ header, children }) {
       {/* Header */}
       {header && (
         <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">{header}</div>
+          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+            {header}
+          </div>
         </header>
       )}
 
