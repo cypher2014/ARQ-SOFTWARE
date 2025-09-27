@@ -63,7 +63,7 @@ export default function Dashboard() {
       header={
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-            Bienvenido,{" "}
+            Bienvenido, {auth.user?.name_user} {auth.user?.last_name}
             <span className="text-indigo-600">{auth.user?.name}</span>
           </h2>
           <p className="mt-1 text-sm text-gray-600">

@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Foundation\Auth\User as Authenticatable; 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Hash;
 
-class Admons extends Model
+class Admons extends Authenticatable
 {
     use HasFactory;
 
@@ -15,6 +15,7 @@ class Admons extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'ID_USERS',       // <-- agregar aquí
         'NAME_USER',
         'LAST_NAME',
         'EMAIL',

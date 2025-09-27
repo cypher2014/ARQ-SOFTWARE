@@ -92,7 +92,7 @@ export default function AuthenticatedLayout({ header, children }) {
                   <UserIcon className="h-5 w-5" />
                 </div>
                 <span className="hidden sm:inline">
-                  {auth?.user?.name || "Mi Perfil"}
+                  {auth?.user?.name_user || "Mi Perfil"}
                 </span>
               </button>
 
