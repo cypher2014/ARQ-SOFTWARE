@@ -45,8 +45,12 @@ export default function AuthenticatedLayout({ header, children }) {
       <nav className="bg-white border-b border-gray-200 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo + Links navegación */}
-            <div className="flex items-center space-x-8">
+            {/* Logo + Título + Links */}
+            <div className="flex items-center space-x-4">
+              {/* Logo */}
+              <img src="/logo.png" alt="Logo" className="h-10 w-auto" />
+
+              {/* Título */}
               <h1 className="text-lg font-bold text-gray-800 whitespace-nowrap">
                 PANEL ADMINISTRATIVO
               </h1>
