@@ -12,28 +12,49 @@ use Illuminate\Support\Facades\Auth;
 
 class AgendaController extends Controller
 {
- 
+    /**
+     * Mostrar formulario para crear una cita.
+     */
     public function create(): Response
     {
         return Inertia::render('Appointment/Appointment'); 
     }
 
-
+    /**
+     * Guardar una nueva cita en la base de datos.
+     */
     public function store(Request $request): RedirectResponse
     {
+        // Validar campos según tu modelo
         $request->validate([
-            'date_recolection' => 'required|date',
-            'user_message' => 'nullable|string|max:500',
+            'DATE_RECOLECTION' => 'required|date',
+            'USER_MESSAGE'     => 'nullable|string|max:500',
         ]);
 
+        // Crear registro en la tabla "agenda"
         Agenda::create([
-            'id_user' => Auth::id(),
-            'date_recolection' => $request->date_recolection,
-            'status_recolection' => 'pendiente',
-            'user_message' => $request->user_message,
+            'ID_USER'            => Auth::id(), 
+            'DATE_RECOLECTION'   => $request->DATE_RECOLECTION,
+            'STATUS_RECOLECTION' => 'pendiente',
+            'USER_MESSAGE'       => $request->USER_MESSAGE,
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Solicitud a sido creada');
+        return redirect()->route('dashboard')
+            ->with('success', 'Solicitud ha sido creada');
+    }
+
+    /**
+     * Listar todas las citas del usuario autenticado.
+     */
+    public function index(): Response
+    {
+        $appointments = Agenda::where('ID_USER', Auth::id())
+            ->orderByDesc('DATE_RECOLECTION')
+            ->get();
+
+        return Inertia::render('Appointment/AppointmentList', [
+            'appointments' => $appointments,
+        ]);
     }
 }
 

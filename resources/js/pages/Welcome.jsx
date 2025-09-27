@@ -41,7 +41,7 @@ export default function Welcome({ auth }) {
                     asChild
                     className="bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl px-6 py-2 transition-transform hover:scale-105"
                 >
-                    <Link href={route('dashboard')}>Administrar</Link>
+                    <Link href={route('admin.login')}>Administrar</Link>
                 </Button>
             ),
         },
