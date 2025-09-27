@@ -48,13 +48,58 @@ class AgendaController extends Controller
      */
     public function index(): Response
     {
-        $appointments = Agenda::where('ID_USER', Auth::id())
+        $appointment = Agenda::where('ID_USER', Auth::id())
             ->orderByDesc('DATE_RECOLECTION')
             ->get();
 
         return Inertia::render('Appointment/AppointmentList', [
-            'appointments' => $appointments,
+            'appointment' => $appointment,
         ]);
     }
-}
 
+    public function edit(Agenda $appointment)
+    {
+
+        if ($appointment->ID_USER !== Auth::id()) {
+            abort(403, 'No autorizado');
+        }
+
+        return Inertia::render('Appointment/EditAppointment', [
+            'appointment' => $appointment,
+        ]);
+    }
+
+    public function update(Request $request, Agenda $appointment)
+    {
+        
+        if ($appointment->ID_USER !== Auth::id()) {
+            abort(403, 'No autorizado');
+        }
+        
+        $request->validate([
+            'date_recolection' => 'required|date',
+            'user_message' => 'nullable|string|max:500',
+        ]);
+
+        $appointment->update([
+            'DATE_RECOLECTION' => $request->DATE_RECOLECTION,
+            'USER_MESSAGE'     => $request->USER_MESSAGE,
+        ]);
+
+        return redirect()
+            ->route('appointment.index')
+            ->with('success', 'Solicitud actualizada correctamente.');
+    }
+
+    public function show(Agenda $appointment)
+    {
+        if ($appointment->ID_USER !== Auth::id()) {
+            abort(403, 'No autorizado');
+        }
+
+        return Inertia::render('Appointment/ShowAppointment', [
+            'appointment' => $appointment,
+    ]);
+
+    }
+}
