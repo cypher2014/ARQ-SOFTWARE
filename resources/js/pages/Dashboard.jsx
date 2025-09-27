@@ -1,15 +1,17 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
-import { Package, RefreshCcw, Eye, X } from "lucide-react";
+import { Package, RefreshCcw, Eye, X, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Dashboard() {
   const { auth } = usePage().props;
   const [showModal, setShowModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   // 📝 Formulario
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -23,7 +25,11 @@ export default function Dashboard() {
     post(route("appointment.store"), {
       onSuccess: () => {
         reset();
-        setShowModal(false);
+        setSuccessMessage("✅ Solicitud agendada con éxito");
+        setTimeout(() => {
+          setSuccessMessage("");
+          setShowModal(false);
+        }, 2000);
       },
     });
   };
@@ -100,70 +106,101 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* MODAL DE FORMULARIO */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative">
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+      {/* MODAL */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 relative overflow-hidden"
             >
-              <X className="w-6 h-6" />
-            </button>
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
 
-            <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">
-              Agendar Solicitud de Recolección
-            </h2>
+              {/* Mensaje de éxito */}
+              <AnimatePresence>
+                {successMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute top-0 left-0 right-0 bg-green-500 text-white text-center py-2 text-sm font-medium"
+                  >
+                    {successMessage}
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-            <form onSubmit={submit} className="space-y-5">
-              <div>
-                <InputLabel htmlFor="DATE_RECOLECTION" value="Fecha y Hora" />
-                <TextInput
-                  id="DATE_RECOLECTION"
-                  type="datetime-local"
-                  name="DATE_RECOLECTION"
-                  value={data.DATE_RECOLECTION}
-                  onChange={(e) => setData("DATE_RECOLECTION", e.target.value)}
-                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-2 focus:ring-green-400"
-                  required
+              <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center mt-2">
+                Agendar Solicitud de Recolección
+              </h2>
+
+              <form onSubmit={submit} className="space-y-5">
+                {/* Fecha */}
+                <div>
+                  <InputLabel htmlFor="DATE_RECOLECTION" value="Fecha y Hora de Recolección" />
+                  <TextInput
+                    id="DATE_RECOLECTION"
+                    type="datetime-local"
+                    name="DATE_RECOLECTION"
+                    value={data.DATE_RECOLECTION}
+                    onChange={(e) => setData("DATE_RECOLECTION", e.target.value)}
+                    className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400"
+                    required
+                  />
+                  <InputError message={errors.DATE_RECOLECTION} className="mt-2" />
+                </div>
+
+                {/* Mensaje */}
+                <div>
+                  <InputLabel htmlFor="USER_MESSAGE" value="Mensaje (Opcional)" />
+                  <textarea
+                    id="USER_MESSAGE"
+                    name="USER_MESSAGE"
+                    value={data.USER_MESSAGE}
+                    onChange={(e) => setData("USER_MESSAGE", e.target.value)}
+                    className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400"
+                    rows="3"
+                  />
+                  <InputError message={errors.USER_MESSAGE} className="mt-2" />
+                </div>
+
+                <input
+                  type="hidden"
+                  name="STATUS_RECOLECTION"
+                  value={data.STATUS_RECOLECTION}
                 />
-                <InputError message={errors.DATE_RECOLECTION} className="mt-2" />
-              </div>
 
-              <div>
-                <InputLabel htmlFor="USER_MESSAGE" value="Mensaje (Opcional)" />
-                <textarea
-                  id="USER_MESSAGE"
-                  name="USER_MESSAGE"
-                  value={data.USER_MESSAGE}
-                  onChange={(e) => setData("USER_MESSAGE", e.target.value)}
-                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-2 focus:ring-green-400"
-                  rows="3"
-                />
-                <InputError message={errors.USER_MESSAGE} className="mt-2" />
-              </div>
-
-              <input
-                type="hidden"
-                name="STATUS_RECOLECTION"
-                value={data.STATUS_RECOLECTION}
-              />
-
-              <div className="flex justify-end">
-                <PrimaryButton
-                  disabled={processing}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6 py-2"
-                >
-                  Agendar
-                </PrimaryButton>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+                {/* Botón */}
+                <div className="flex justify-end">
+                  <PrimaryButton
+                    disabled={processing}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6 py-2 transition-transform hover:scale-105"
+                  >
+                    {processing ? "Agendando..." : "Agendar"}
+                  </PrimaryButton>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AuthenticatedLayout>
   );
 }
+
+
 
 
 
