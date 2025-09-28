@@ -25,7 +25,7 @@ export default function Dashboard() {
     post(route("appointment.store"), {
       onSuccess: () => {
         reset();
-        setSuccessMessage("✅ Solicitud agendada con éxito");
+        setSuccessMessage("Solicitud agendada con éxito");
         setTimeout(() => {
           setSuccessMessage("");
           setShowModal(false);
@@ -45,14 +45,14 @@ export default function Dashboard() {
     {
       title: "Actualizar Solicitudes",
       description: "Modifica solicitudes existentes fácilmente.",
-      href: "/solicitudes/update",
+      href: route("appointment.index"),
       icon: RefreshCcw,
       gradient: "from-green-500 to-green-700",
     },
     {
       title: "Ver Solicitudes",
       description: "Consulta todas las solicitudes creadas.",
-      href: "/solicitudes",
+      href: route("appointment.index"),
       icon: Eye,
       gradient: "from-purple-500 to-purple-700",
     },
