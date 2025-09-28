@@ -3,6 +3,7 @@ import { Head, Link } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 export default function ShowAppointment({ appointment }) {
   return (
