@@ -14,7 +14,7 @@ export default function EditAppointment({ appointment }) {
 
     const submit = (e) => {
         e.preventDefault();
-        put(route('appointment.update', appointment.id));
+        put(route('appointment.update', appointment.id_agenda));
     };
 
     return (

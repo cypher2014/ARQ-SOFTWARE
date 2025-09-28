@@ -38,11 +38,11 @@ export default function AppointmentList({ appointment }) {
               <tbody>
                 {appointment.map((appointment) => (
                   <tr
-                    key={appointment.id}
+                    key={appointment.id_agenda}
                     className="text-center hover:bg-gray-50 transition"
                   >
                     <td className="px-4 py-3 border text-sm text-gray-700">
-                      {appointment.id}
+                      {appointment.id_agenda}
                     </td>
                     <td className="px-4 py-3 border text-sm text-gray-700">
                       {appointment.date_recolection}
@@ -51,12 +51,12 @@ export default function AppointmentList({ appointment }) {
                       {appointment.user_message || "Sin mensaje"}
                     </td>
                     <td className="px-4 py-3 border space-x-2 flex justify-center">
-                      <Link href={route('appointment.show', appointment.id)}>
+                      <Link href={route("appointment.show", appointment.id_agenda)}>
                         <PrimaryButton className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-4 py-1 text-sm font-medium text-white shadow hover:from-purple-600 hover:to-purple-700">
                           View
                         </PrimaryButton>
                       </Link>
-                      <Link href={route('appointment.edit', appointment.id)}>
+                      <Link href={route("appointment.edit", appointment.id_agenda)}>
                         <PrimaryButton className="rounded-full bg-gradient-to-r from-green-500 to-green-600 px-4 py-1 text-sm font-medium text-white shadow hover:from-green-600 hover:to-green-700">
                           Update
                         </PrimaryButton>

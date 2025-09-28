@@ -21,7 +21,7 @@ export default function ShowAppointment({ appointment }) {
             id="id"
             type="text"
             name="id"
-            value={appointment.id}
+            value={appointment.id_agenda}
             className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-2 focus:ring-green-400"
             readOnly
           />
@@ -69,7 +69,7 @@ export default function ShowAppointment({ appointment }) {
               Volver
             </PrimaryButton>
           </Link>
-          <Link href={route("appointment.edit", appointment.id)}>
+          <Link href={route("appointment.edit", appointment.id_agenda)}>
             <PrimaryButton className="rounded-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700">
               Editar
             </PrimaryButton>
