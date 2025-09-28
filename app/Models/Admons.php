@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Foundation\Auth\User as Authenticatable; 
-use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,7 +15,7 @@ class Admons extends Authenticatable
     public $timestamps = true;
 
     protected $fillable = [
-        'ID_USERS',       // <-- agregar aquí
+        'ID_USERS',
         'NAME_USER',
         'LAST_NAME',
         'EMAIL',
@@ -32,9 +32,16 @@ class Admons extends Authenticatable
         'PASSWORD',
     ];
 
-    // Mutator para encriptar password automáticamente
+    // Encriptar contraseña automáticamente
     public function setPASSWORDAttribute($value)
     {
         $this->attributes['PASSWORD'] = Hash::make($value);
     }
+
+    // Laravel usa este método para autenticar
+    public function getAuthPassword()
+    {
+        return $this->PASSWORD;
+    }
 }
+

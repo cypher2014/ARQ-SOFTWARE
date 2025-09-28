@@ -9,49 +9,37 @@ use Inertia\Inertia;
 
 class LoginAdminController extends Controller
 {
-    /**
-     * Mostrar el formulario de login (React/Inertia).
-     */
     public function showLoginForm()
     {
-        return Inertia::render('Admin/LoginAdmin'); 
+        return Inertia::render('Admin/LoginAdmin');
     }
 
-    /**
-     * Procesar el login del administrador.
-     */
-    public function login(Request $request)
-    {
-        // Validar datos
-        $credentials = $request->validate([
-            'email'    => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+   public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
 
-        // Intentar login con el guard "admin"
-        if (Auth::guard('admin')->attempt([
-            'EMAIL'    => $credentials['email'],   // 👈 coincide con el campo de tu DB
-            'password' => $credentials['password'],
-        ])) {
-            // Regenerar la sesión
-            $request->session()->regenerate();
-
-            return redirect()->intended(route('admin.dashboard'))
-                ->with('success', 'Bienvenido administrador');
-        }
-
-        return back()->withErrors([
-            'email' => 'Las credenciales no son correctas.',
-        ])->onlyInput('email');
+    // 🔹 Importante: usa 'EMAIL' => value, pero 'password' lowercase
+    if (Auth::guard('admin')->attempt([
+        'EMAIL' => $credentials['email'],  
+        'password' => $credentials['password'], // ⚡ Laravel llama getAuthPassword()
+    ])) {
+        $request->session()->regenerate();
+        return redirect()->intended(route('admin.dashboard'))
+            ->with('success', 'Bienvenido administrador');
     }
 
-    /**
-     * Cerrar sesión.
-     */
+    return back()->withErrors([
+        'email' => 'Credenciales incorrectas',
+    ])->onlyInput('email');
+}
+
+
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -59,13 +47,19 @@ class LoginAdminController extends Controller
             ->with('success', 'Sesión cerrada correctamente.');
     }
 
-    /**
-     * Dashboard del administrador (React/Inertia).
-     */
-    public function dashboard()
+    public function adminDashboard()
     {
-        return Inertia::render('Admin/Dashboard'); 
-        // ✅ Crea resources/js/Pages/Admin/Dashboard.jsx
+        $admin = Auth::guard('admin')->user();
+
+        return Inertia::render('Admin/AdminDashboard', [
+            'auth' => ['user' => $admin],
+        ]);
     }
 }
+
+
+
+
+
+
 

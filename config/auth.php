@@ -7,47 +7,27 @@ return [
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Guards
-    |--------------------------------------------------------------------------
-    */
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
-        // 🔹 Guard para administradores
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admons',
-        ],
+   'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | User Providers
-    |--------------------------------------------------------------------------
-    */
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
-
-        // 🔹 Provider para administradores
-        'admons' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Admons::class,
-        ],
+    'admin' => [
+        'driver' => 'session',
+        'provider' => 'admons',
     ],
+],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Resetting Passwords
-    |--------------------------------------------------------------------------
-    */
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\User::class,
+    ],
+    'admons' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Admons::class,
+    ],
+],
     'passwords' => [
         'users' => [
             'provider' => 'users',

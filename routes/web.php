@@ -50,32 +50,27 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 /*
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 | Rutas de Administradores
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 */
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Registro público
+    // Registro
     Route::get('register', [RegisterAdminController::class, 'create'])->name('register');
     Route::post('register', [RegisterAdminController::class, 'store'])->name('register.store');
 
-    // Login admin
+    // Login
     Route::get('login', [LoginAdminController::class, 'showLoginForm'])->name('login');
     Route::post('login', [LoginAdminController::class, 'login'])->name('login.submit');
     Route::post('logout', [LoginAdminController::class, 'logout'])->name('logout');
 
-    // Panel interno protegido
-    Route::middleware(['auth', 'isAdmin'])->group(function () {
-        Route::get('dashboard', [LoginAdminController::class, 'dashboard'])->name('dashboard');
-
-        Route::resource('gestores', RegisterAdminController::class)->except(['create', 'store'])->names([
-            'index'   => 'gestores.index',
-            'edit'    => 'gestores.edit',
-            'update'  => 'gestores.update',
-            'destroy' => 'gestores.destroy',
-        ]);
+    // Dashboard admin protegido
+    Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
+        Route::get('dashboard', [LoginAdminController::class, 'adminDashboard'])->name('dashboard');
     });
 });
+
+
 
 
 

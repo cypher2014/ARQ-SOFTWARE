@@ -3,7 +3,7 @@ import { Head, usePage, Link } from "@inertiajs/react";
 import Cookies from "js-cookie"; // 👈 Instala con: npm install js-cookie
 import { Card, CardContent } from "@/Components/ui/card";
 
-export default function Dashboard() {
+export default function AdminDashboard() {
     const { auth, topMaterials } = usePage().props; // 👈 auth viene de Laravel
 
     // Guardar ID en cookie al cargar
