@@ -64,19 +64,19 @@ export default function AuthenticatedLayout({ header, children }) {
                   Inicio
                 </Link>
                 <Link
-                  href="/solicitudes"
+                  href="/appointment"
                   className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
                 >
                   Solicitudes
                 </Link>
                 <Link
-                  href="/reportes"
+                  href="/reports"
                   className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
                 >
                   Reportes
                 </Link>
                 <Link
-                  href="/configuracion"
+                  href="/profile"
                   className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition"
                 >
                   Configuración

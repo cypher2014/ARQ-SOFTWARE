@@ -11,37 +11,45 @@ class Admons extends Authenticatable
     use HasFactory;
 
     protected $table = 'admons_users';
-    protected $primaryKey = 'ID_USERS';
+    protected $primaryKey = 'id_users';
     public $timestamps = true;
 
     protected $fillable = [
-        'ID_USERS',
-        'NAME_USER',
-        'LAST_NAME',
-        'EMAIL',
-        'PASSWORD',
-        'USER_PHONE',
-        'USER_POSITION',
-        'CITY',
-        'ROLE_ADMON',
-        'ROLE_COURIER',
-        'ROLE_GESTOR',
+        'name_user',
+        'last_name',
+        'email',
+        'password',
+        'user_phone',
+        'user_position',
+        'city',
+        'role_admon',
+        'role_courier',
+        'role_gestor',
     ];
 
     protected $hidden = [
-        'PASSWORD',
+        'password',
     ];
 
-    // Encriptar contraseña automáticamente
-    public function setPASSWORDAttribute($value)
+    // 🔸 Laravel usará esta columna como "username" para autenticación
+    public function getAuthIdentifierName()
     {
-        $this->attributes['PASSWORD'] = Hash::make($value);
+        return 'email';
     }
 
-    // Laravel usa este método para autenticar
+    // 🔸 Laravel usará este campo como contraseña
     public function getAuthPassword()
     {
-        return $this->PASSWORD;
+        return $this->password;
+    }
+
+    // 🔸 Encriptar contraseña automáticamente
+    public function setPasswordAttribute($value)
+    {
+        if (!empty($value)) {
+            $this->attributes['password'] = Hash::make($value);
+        }
     }
 }
+
 

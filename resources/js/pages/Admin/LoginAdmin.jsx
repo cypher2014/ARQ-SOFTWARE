@@ -1,5 +1,5 @@
-import React from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import React, { useEffect } from 'react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
@@ -7,6 +7,16 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 
 export default function LoginAdmin() {
+    const { props } = usePage();
+    const { auth } = props;
+
+    // Redirigir al dashboard si el admin ya está logueado
+    useEffect(() => {
+        if (auth?.user) {
+            window.location.href = route('admin.dashboard');
+        }
+    }, [auth]);
+
     const { data, setData, post, processing, errors } = useForm({
         email: '',
         password: '',
@@ -14,7 +24,9 @@ export default function LoginAdmin() {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('admin.login.submit'));
+        post(route('admin.login.submit'), {
+            preserveScroll: true,
+        });
     };
 
     const inputClass = "mt-1 block w-full border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all pl-10";
@@ -36,9 +48,16 @@ export default function LoginAdmin() {
                     </div>
 
                     {/* Título */}
-                    <h2 className="text-3xl font-extrabold text-center mb-8 text-gray-800">
+                    <h2 className="text-3xl font-extrabold text-center mb-4 text-gray-800">
                         Login Administrador
                     </h2>
+
+                    {/* Mensaje de error general */}
+                    {errors.login && (
+                        <div className="text-red-600 text-center mb-4">
+                            {errors.login}
+                        </div>
+                    )}
 
                     <form onSubmit={submit} className="space-y-6">
 
@@ -75,15 +94,15 @@ export default function LoginAdmin() {
                             <InputError message={errors.password} className="mt-1" />
                         </div>
 
-                        {/* Botón centrado verde igual que registro */}
+                        {/* Botón centrado */}
                         <div className="flex justify-center mt-6">
-    <PrimaryButton
-        className="w-full py-3 text-lg bg-green-600 hover:bg-green-700 shadow-lg text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
-        disabled={processing}
-    >
-        {processing ? 'Iniciando sesión...' : 'Iniciar sesión'}
-    </PrimaryButton>
-</div>
+                            <PrimaryButton
+                                className="w-full py-3 text-lg bg-green-600 hover:bg-green-700 shadow-lg text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                                disabled={processing}
+                            >
+                                {processing ? 'Iniciando sesión...' : 'Iniciar sesión'}
+                            </PrimaryButton>
+                        </div>
 
                     </form>
                 </div>
@@ -91,6 +110,7 @@ export default function LoginAdmin() {
         </>
     );
 }
+
 
 
 

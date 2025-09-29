@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\AgendaController;
 use App\Http\Controllers\Auth\LoginAdminController;
 use App\Http\Controllers\Auth\RegisterAdminController;
+use App\Http\Middleware\AdmonAuth;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Rutas de Dashboard Usuarios
+| Rutas de Dashboard de Usuarios (Clientes)
 |--------------------------------------------------------------------------
 */
 Route::get('/dashboard', function () {
@@ -53,25 +54,24 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 /*
-|-------------------------------------------------------------------------- 
-| Rutas de Administradores
-|-------------------------------------------------------------------------- 
+|--------------------------------------------------------------------------
+| Rutas para Administradores
+|--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->group(function () {
-    // Registro
-    Route::get('register', [RegisterAdminController::class, 'create'])->name('register');
-    Route::post('register', [RegisterAdminController::class, 'store'])->name('register.store');
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('login', [LoginAdminController::class, 'showLoginForm'])->name('login');
+        Route::post('login', [LoginAdminController::class, 'login'])->name('login.submit');
+        Route::post('logout', [LoginAdminController::class, 'logout'])->name('logout');
 
-    // Login
-    Route::get('login', [LoginAdminController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [LoginAdminController::class, 'login'])->name('login.submit');
-    Route::post('logout', [LoginAdminController::class, 'logout'])->name('logout');
-
-    // Dashboard admin protegido
-    Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
-        Route::get('dashboard', [LoginAdminController::class, 'adminDashboard'])->name('dashboard');
+        // Dashboard protegido
+        Route::middleware([AdmonAuth::class])->group(function () {
+            Route::get('dashboard', [LoginAdminController::class, 'adminDashboard'])->name('dashboard');
+        });
     });
-});
+
+
 
 
 

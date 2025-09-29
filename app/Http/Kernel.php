@@ -44,7 +44,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         // Middleware personalizado
-        'isAdmin' => \App\Http\Middleware\IsAdmin::class,
+        'admon.auth' => \App\Http\Middleware\AdmonAuth::class,
     ];
 }
 

@@ -9,37 +9,39 @@ use Inertia\Inertia;
 
 class LoginAdminController extends Controller
 {
+    // Mostrar formulario de login de administradores
     public function showLoginForm()
     {
         return Inertia::render('Admin/LoginAdmin');
     }
 
-   public function login(Request $request)
-{
-    $credentials = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required'],
-    ]);
+    // Login de administrador
+    public function login(Request $request)
+    {
+        // Validación
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-    // 🔹 Importante: usa 'EMAIL' => value, pero 'password' lowercase
-    if (Auth::guard('admin')->attempt([
-        'EMAIL' => $credentials['email'],  
-        'password' => $credentials['password'], // ⚡ Laravel llama getAuthPassword()
-    ])) {
-        $request->session()->regenerate();
-        return redirect()->intended(route('admin.dashboard'))
-            ->with('success', 'Bienvenido administrador');
+        // Intentar login con el guard 'admin'
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate(); // regenerar sesión
+
+            return redirect()->intended(route('admin.dashboard'))
+                ->with('success', 'Bienvenido administrador');
+        }
+
+        // Si falla, regresar con error
+        return back()->withErrors([
+            'email' => 'Credenciales incorrectas',
+        ])->onlyInput('email');
     }
 
-    return back()->withErrors([
-        'email' => 'Credenciales incorrectas',
-    ])->onlyInput('email');
-}
-
-
+    // Logout de administrador
     public function logout(Request $request)
     {
-        Auth::guard('admin')->logout();
+        Auth::guard('admin')->logout(); // cerrar sesión del guard admin
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -47,15 +49,18 @@ class LoginAdminController extends Controller
             ->with('success', 'Sesión cerrada correctamente.');
     }
 
+    // Dashboard de administrador protegido
     public function adminDashboard()
     {
-        $admin = Auth::guard('admin')->user();
+        $admin = Auth::guard('admin')->user(); // obtener el usuario logueado en el guard 'admin'
 
         return Inertia::render('Admin/AdminDashboard', [
             'auth' => ['user' => $admin],
         ]);
     }
 }
+
+
 
 
 
