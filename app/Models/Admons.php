@@ -15,6 +15,7 @@ class Admons extends Authenticatable
     public $timestamps = true;
 
     protected $fillable = [
+        'id_users',
         'name_user',
         'last_name',
         'email',

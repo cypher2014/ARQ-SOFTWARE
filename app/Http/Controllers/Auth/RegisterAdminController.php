@@ -14,7 +14,7 @@ class RegisterAdminController extends Controller
      */
     public function index()
     {
-        $admons = Admons::orderBy('ID_USERS', 'desc')->get();
+        $admons = Admons::orderBy('id_users', 'desc')->get();
 
         return Inertia::render('Admin/Index', [
             'admons' => $admons,
@@ -35,20 +35,21 @@ class RegisterAdminController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'ID_USERS'      => 'required|numeric|unique:admons_users,ID_USERS',
-            'NAME_USER'     => 'required|string|max:100',
-            'LAST_NAME'     => 'required|string|max:100',
-            'EMAIL'         => 'required|email|unique:admons_users,EMAIL',
-            'PASSWORD'      => 'required|min:6',
-            'USER_PHONE'    => 'nullable|string|max:20',
-            'USER_POSITION' => 'nullable|string|max:100',
-            'CITY'          => 'nullable|string|max:100',
+            // ⚠️ si `id_users` es autoincremental, ELIMINA esta línea
+            'id_users'      => 'required|numeric|unique:admons_users,id_users',
+            'name_user'     => 'required|string|max:100',
+            'last_name'     => 'required|string|max:100',
+            'email'         => 'required|email|unique:admons_users,email',
+            'password'      => 'required|min:6',
+            'user_phone'    => 'nullable|string|max:20',
+            'user_position' => 'nullable|string|max:100',
+            'city'          => 'nullable|string|max:100',
         ]);
 
         // Roles por defecto
-        $validated['ROLE_ADMON'] = 0;
-        $validated['ROLE_COURIER'] = 0;
-        $validated['ROLE_GESTOR'] = 1;
+        $validated['role_admon']   = 0;
+        $validated['role_courier'] = 0;
+        $validated['role_gestor']  = 1;
 
         Admons::create($validated);
 
@@ -75,22 +76,22 @@ class RegisterAdminController extends Controller
         $admon = Admons::findOrFail($id);
 
         $validated = $request->validate([
-            'NAME_USER'     => 'required|string|max:100',
-            'LAST_NAME'     => 'required|string|max:100',
-            'EMAIL'         => 'required|email|unique:admons_users,EMAIL,' . $id . ',ID_USERS',
-            'PASSWORD'      => 'nullable|min:6',
-            'USER_PHONE'    => 'nullable|string|max:20',
-            'USER_POSITION' => 'nullable|string|max:100',
-            'CITY'          => 'nullable|string|max:100',
+            'name_user'     => 'required|string|max:100',
+            'last_name'     => 'required|string|max:100',
+            'email'         => 'required|email|unique:admons_users,email,' . $id . ',id_users',
+            'password'      => 'nullable|min:6',
+            'user_phone'    => 'nullable|string|max:20',
+            'user_position' => 'nullable|string|max:100',
+            'city'          => 'nullable|string|max:100',
         ]);
 
         // Roles por defecto
-        $validated['ROLE_ADMON'] = 0;
-        $validated['ROLE_COURIER'] = 0;
-        $validated['ROLE_GESTOR'] = 1;
+        $validated['role_admon']   = 0;
+        $validated['role_courier'] = 0;
+        $validated['role_gestor']  = 1;
 
-        if (empty($validated['PASSWORD'])) {
-            unset($validated['PASSWORD']);
+        if (empty($validated['password'])) {
+            unset($validated['password']);
         }
 
         $admon->update($validated);
@@ -109,5 +110,6 @@ class RegisterAdminController extends Controller
         return redirect()->route('admin.gestores.index')->with('success', 'Administrador eliminado correctamente.');
     }
 }
+
 
 

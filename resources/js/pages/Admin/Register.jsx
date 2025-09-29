@@ -4,41 +4,47 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { UserIcon, EnvelopeIcon, PhoneIcon, LockClosedIcon, MapPinIcon, BriefcaseIcon, IdentificationIcon } from '@heroicons/react/24/outline';
+import {
+    UserIcon,
+    EnvelopeIcon,
+    PhoneIcon,
+    LockClosedIcon,
+    MapPinIcon,
+    BriefcaseIcon,
+    IdentificationIcon,
+} from '@heroicons/react/24/outline';
 
 export default function Register() {
-    const { data, setData, post, processing, errors } = useForm({
-        ID_USERS: '',
-        NAME_USER: '',
-        LAST_NAME: '',
-        EMAIL: '',
-        PASSWORD: '',
-        USER_PHONE: '',
-        USER_POSITION: '',
-        CITY: '',
+    const { data, setData, post, processing, errors, reset } = useForm({
+        id_users: '',
+        name_user: '',
+        last_name: '',
+        email: '',
+        password: '',
+        user_phone: '',
+        user_position: '',
+        city: '',
     });
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('admin.register.store'));
+        post(route('admin.gestores.store'), {
+            onFinish: () => reset('password'),
+        });
     };
 
-    const inputClass = "mt-1 block w-full border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all pl-10";
+    const inputClass =
+        'mt-1 block w-full border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-500 transition-all pl-10 py-2 disabled:bg-gray-100';
 
     return (
         <>
             <Head title="Registro de Administrador" />
 
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4 py-12">
+            <div className="min-h-screen flex items-center justify-center bg-white px-4 py-12">
                 <div className="w-full max-w-xl p-8 bg-white rounded-3xl shadow-2xl">
-                    
-                    {/* Logo animado */}
+                    {/* Logo */}
                     <div className="flex justify-center mb-6">
-                        <img
-                            src="/logo.png"
-                            alt="Logo de la App"
-                            className="h-20 w-auto animate-fade-in"
-                        />
+                        <img src="/logo.png" alt="Logo de la App" className="h-20 w-auto" />
                     </div>
 
                     {/* Título */}
@@ -46,143 +52,183 @@ export default function Register() {
                         Registro de Administrador
                     </h2>
 
-                    <form onSubmit={submit} className="space-y-6">
-
+                    <form onSubmit={submit} className="space-y-6" noValidate>
                         {/* DNI */}
                         <div className="relative">
-                            <InputLabel htmlFor="ID_USERS" value="DNI" />
+                            <InputLabel htmlFor="id_users" value="DNI" />
                             <IdentificationIcon className="w-5 h-5 absolute left-3 top-11 text-gray-400 pointer-events-none" />
                             <TextInput
-                                id="ID_USERS"
-                                value={data.ID_USERS}
-                                onChange={(e) => setData('ID_USERS', e.target.value)}
+                                id="id_users"
+                                name="id_users"
+                                value={data.id_users}
+                                onChange={(e) => setData('id_users', e.target.value)}
                                 className={inputClass}
                                 required
                                 placeholder="1234567890"
+                                autoComplete="off"
+                                aria-invalid={errors.id_users ? 'true' : 'false'}
+                                disabled={processing}
                             />
-                            <InputError message={errors.ID_USERS} className="mt-1" />
+                            <InputError message={errors.id_users} className="mt-1" />
                         </div>
 
                         {/* Nombre y Apellido */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="relative">
-                                <InputLabel htmlFor="NAME_USER" value="Nombre" />
+                                <InputLabel htmlFor="name_user" value="Nombre" />
                                 <UserIcon className="w-5 h-5 absolute left-3 top-11 text-gray-400 pointer-events-none" />
                                 <TextInput
-                                    id="NAME_USER"
-                                    value={data.NAME_USER}
-                                    onChange={(e) => setData('NAME_USER', e.target.value)}
+                                    id="name_user"
+                                    name="name_user"
+                                    value={data.name_user}
+                                    onChange={(e) => setData('name_user', e.target.value)}
                                     className={inputClass}
                                     required
                                     placeholder="Juan"
+                                    autoComplete="given-name"
+                                    aria-invalid={errors.name_user ? 'true' : 'false'}
+                                    disabled={processing}
                                 />
-                                <InputError message={errors.NAME_USER} className="mt-1" />
+                                <InputError message={errors.name_user} className="mt-1" />
                             </div>
+
                             <div className="relative">
-                                <InputLabel htmlFor="LAST_NAME" value="Apellido" />
+                                <InputLabel htmlFor="last_name" value="Apellido" />
                                 <UserIcon className="w-5 h-5 absolute left-3 top-11 text-gray-400 pointer-events-none" />
                                 <TextInput
-                                    id="LAST_NAME"
-                                    value={data.LAST_NAME}
-                                    onChange={(e) => setData('LAST_NAME', e.target.value)}
+                                    id="last_name"
+                                    name="last_name"
+                                    value={data.last_name}
+                                    onChange={(e) => setData('last_name', e.target.value)}
                                     className={inputClass}
                                     required
                                     placeholder="Pérez"
+                                    autoComplete="family-name"
+                                    aria-invalid={errors.last_name ? 'true' : 'false'}
+                                    disabled={processing}
                                 />
-                                <InputError message={errors.LAST_NAME} className="mt-1" />
+                                <InputError message={errors.last_name} className="mt-1" />
                             </div>
                         </div>
 
                         {/* Correo y Teléfono */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="relative">
-                                <InputLabel htmlFor="EMAIL" value="Correo Electrónico" />
+                                <InputLabel htmlFor="email" value="Correo Electrónico" />
                                 <EnvelopeIcon className="w-5 h-5 absolute left-3 top-11 text-gray-400 pointer-events-none" />
                                 <TextInput
-                                    id="EMAIL"
+                                    id="email"
+                                    name="email"
                                     type="email"
-                                    value={data.EMAIL}
-                                    onChange={(e) => setData('EMAIL', e.target.value)}
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
                                     className={inputClass}
                                     required
                                     placeholder="correo@ejemplo.com"
+                                    autoComplete="email"
+                                    aria-invalid={errors.email ? 'true' : 'false'}
+                                    disabled={processing}
                                 />
-                                <InputError message={errors.EMAIL} className="mt-1" />
+                                <InputError message={errors.email} className="mt-1" />
                             </div>
+
                             <div className="relative">
-                                <InputLabel htmlFor="USER_PHONE" value="Teléfono" />
+                                <InputLabel htmlFor="user_phone" value="Teléfono" />
                                 <PhoneIcon className="w-5 h-5 absolute left-3 top-11 text-gray-400 pointer-events-none" />
                                 <TextInput
-                                    id="USER_PHONE"
-                                    value={data.USER_PHONE}
-                                    onChange={(e) => setData('USER_PHONE', e.target.value)}
+                                    id="user_phone"
+                                    name="user_phone"
+                                    value={data.user_phone}
+                                    onChange={(e) => setData('user_phone', e.target.value)}
                                     className={inputClass}
                                     placeholder="+57 300 000 0000"
+                                    autoComplete="tel"
+                                    inputMode="tel"
+                                    aria-invalid={errors.user_phone ? 'true' : 'false'}
+                                    disabled={processing}
                                 />
-                                <InputError message={errors.USER_PHONE} className="mt-1" />
+                                <InputError message={errors.user_phone} className="mt-1" />
                             </div>
                         </div>
 
                         {/* Contraseña */}
                         <div className="relative">
-                            <InputLabel htmlFor="PASSWORD" value="Contraseña" />
+                            <InputLabel htmlFor="password" value="Contraseña" />
                             <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 text-gray-400 pointer-events-none" />
                             <TextInput
-                                id="PASSWORD"
+                                id="password"
+                                name="password"
                                 type="password"
-                                value={data.PASSWORD}
-                                onChange={(e) => setData('PASSWORD', e.target.value)}
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
                                 className={inputClass}
                                 required
                                 placeholder="********"
+                                autoComplete="new-password"
+                                aria-invalid={errors.password ? 'true' : 'false'}
+                                disabled={processing}
                             />
-                            <InputError message={errors.PASSWORD} className="mt-1" />
+                            <InputError message={errors.password} className="mt-1" />
                         </div>
 
                         {/* Cargo y Ciudad */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="relative">
-                                <InputLabel htmlFor="USER_POSITION" value="Cargo" />
+                                <InputLabel htmlFor="user_position" value="Cargo" />
                                 <BriefcaseIcon className="w-5 h-5 absolute left-3 top-11 text-gray-400 pointer-events-none" />
                                 <TextInput
-                                    id="USER_POSITION"
-                                    value={data.USER_POSITION}
-                                    onChange={(e) => setData('USER_POSITION', e.target.value)}
+                                    id="user_position"
+                                    name="user_position"
+                                    value={data.user_position}
+                                    onChange={(e) => setData('user_position', e.target.value)}
                                     className={inputClass}
                                     placeholder="Gerente"
+                                    autoComplete="organization-title"
+                                    aria-invalid={errors.user_position ? 'true' : 'false'}
+                                    disabled={processing}
                                 />
-                                <InputError message={errors.USER_POSITION} className="mt-1" />
+                                <InputError message={errors.user_position} className="mt-1" />
                             </div>
+
                             <div className="relative">
-                                <InputLabel htmlFor="CITY" value="Ciudad" />
+                                <InputLabel htmlFor="city" value="Ciudad" />
                                 <MapPinIcon className="w-5 h-5 absolute left-3 top-11 text-gray-400 pointer-events-none" />
                                 <TextInput
-                                    id="CITY"
-                                    value={data.CITY}
-                                    onChange={(e) => setData('CITY', e.target.value)}
+                                    id="city"
+                                    name="city"
+                                    value={data.city}
+                                    onChange={(e) => setData('city', e.target.value)}
                                     className={inputClass}
                                     placeholder="Bogotá"
+                                    autoComplete="address-level2"
+                                    aria-invalid={errors.city ? 'true' : 'false'}
+                                    disabled={processing}
                                 />
-                                <InputError message={errors.CITY} className="mt-1" />
+                                <InputError message={errors.city} className="mt-1" />
                             </div>
                         </div>
 
                         {/* Botón centrado */}
                         <div className="flex justify-center mt-6">
                             <PrimaryButton
-                                className="bg-green-600 hover:bg-green-700 text-white rounded-2xl px-10 py-3 font-semibold shadow-lg transform hover:scale-105 transition-all duration-300"
+                                className="bg-green-600 hover:bg-green-700 text-white rounded-2xl px-10 py-3 font-semibold shadow-lg transform hover:scale-105 transition-all duration-300 disabled:opacity-70"
                                 disabled={processing}
                             >
                                 {processing ? 'Registrando...' : 'Registrarse'}
                             </PrimaryButton>
                         </div>
-
                     </form>
                 </div>
             </div>
         </>
     );
 }
+
+
+
+
+
+
 
 
 

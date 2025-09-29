@@ -35,7 +35,7 @@ export default function LoginAdmin() {
         <>
             <Head title="Login Administrador" />
 
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4 py-12">
+            <div className="min-h-screen flex items-center justify-center bg-white px-4 py-12">
                 <div className="w-full max-w-md p-8 bg-white rounded-3xl shadow-2xl">
                     
                     {/* Logo animado */}

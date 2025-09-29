@@ -64,6 +64,24 @@ Route::prefix('admin')
         Route::get('login', [LoginAdminController::class, 'showLoginForm'])->name('login');
         Route::post('login', [LoginAdminController::class, 'login'])->name('login.submit');
         Route::post('logout', [LoginAdminController::class, 'logout'])->name('logout');
+        // Listado de administradores
+        Route::get('/gestores', [RegisterAdminController::class, 'index'])
+    ->name('gestores.index');
+
+Route::get('/gestores/create', [RegisterAdminController::class, 'create'])
+    ->name('gestores.create');
+
+Route::post('/gestores', [RegisterAdminController::class, 'store'])
+    ->name('gestores.store');
+
+Route::get('/gestores/{id}/edit', [RegisterAdminController::class, 'edit'])
+    ->name('gestores.edit');
+
+Route::put('/gestores/{id}', [RegisterAdminController::class, 'update'])
+    ->name('gestores.update');
+
+Route::delete('/gestores/{id}', [RegisterAdminController::class, 'destroy'])
+    ->name('gestores.destroy');
 
         // Dashboard protegido
         Route::middleware([AdmonAuth::class])->group(function () {
