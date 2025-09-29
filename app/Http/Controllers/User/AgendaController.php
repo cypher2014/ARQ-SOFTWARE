@@ -71,25 +71,26 @@ class AgendaController extends Controller
 
     public function update(Request $request, Agenda $appointment)
     {
-        
-        if ($appointment->ID_USER !== Auth::id()) {
-            abort(403, 'No autorizado');
-        }
-        
-        $request->validate([
-            'date_recolection' => 'required|date',
-            'user_message' => 'nullable|string|max:500',
-        ]);
 
-        $appointment->update([
-            'DATE_RECOLECTION' => $request->DATE_RECOLECTION,
-            'USER_MESSAGE'     => $request->USER_MESSAGE,
-        ]);
-
-        return redirect()
-            ->route('appointment.index')
-            ->with('success', 'Solicitud actualizada correctamente.');
+    if ($appointment->ID_USER !== Auth::id()) {
+        abort(403, 'No autorizado');
     }
+
+    $request->validate([
+        'date_recolection' => 'required|date',
+        'user_message'     => 'nullable|string|max:500',
+    ]);
+
+    $appointment->update([
+        'DATE_RECOLECTION' => $request->date_recolection,
+        'USER_MESSAGE'     => $request->user_message,
+    ]);
+
+    return redirect()
+        ->route('appointment.index')
+        ->with('success', 'Solicitud actualizada correctamente.');
+    }
+
 
     public function show(Agenda $appointment)
     {
