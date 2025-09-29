@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { Head, usePage, Link } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/core"; // ✅ Corregido
+import { Head, usePage, Link, router } from "@inertiajs/react";
 import Cookies from "js-cookie";
 import { Card, CardContent } from "@/Components/ui/card";
 
 export default function AdminDashboard() {
     const { auth, topMaterials } = usePage().props;
 
+    // Guardar ID del admin en cookie
     useEffect(() => {
         if (auth?.user?.ID_USERS) {
             Cookies.set("admin_id", auth.user.ID_USERS, { expires: 7 });
@@ -18,18 +18,20 @@ export default function AdminDashboard() {
             <Head title="Panel de Administrador" />
 
             <div className="max-w-7xl mx-auto p-6">
+                {/* Header: Bienvenida + Logout */}
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-3xl font-bold text-gray-800">
                         Bienvenido, {auth?.user?.NAME_USER ?? "Administrador"}
                     </h1>
                     <button
-                        onClick={() => Inertia.post(route('admin.logout'))}
+                        onClick={() => router.post(route('admin.logout'))}
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
                     >
                         Cerrar sesión
                     </button>
                 </div>
 
+                {/* Tarjetas principales */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                     <Link href={route('admin.solicitudes.index')}>
                         <Card className="cursor-pointer hover:shadow-lg transition rounded-2xl">
@@ -56,6 +58,7 @@ export default function AdminDashboard() {
                     </Link>
                 </div>
 
+                {/* Materiales más recolectados */}
                 <div className="bg-white rounded-2xl shadow-md p-6">
                     <h2 className="text-xl font-bold text-gray-700 mb-4">
                         Materiales más recolectados
@@ -83,6 +86,8 @@ export default function AdminDashboard() {
         </>
     );
 }
+
+
 
 
 
