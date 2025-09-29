@@ -20,6 +20,7 @@ class Agenda extends Model
         'USER_MESSAGE',
     ];
 
+
     // Relaciones
     public function user()
     {

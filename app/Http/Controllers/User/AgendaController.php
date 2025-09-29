@@ -60,7 +60,7 @@ class AgendaController extends Controller
     public function edit(Agenda $appointment)
     {
 
-        if ($appointment->ID_USER !== Auth::id()) {
+        if ($appointment->id_user !== Auth::id()) {
             abort(403, 'No autorizado');
         }
 
@@ -72,7 +72,7 @@ class AgendaController extends Controller
     public function update(Request $request, Agenda $appointment)
     {
 
-    if ($appointment->ID_USER !== Auth::id()) {
+    if ($appointment->id_user !== Auth::id()) {
         abort(403, 'No autorizado');
     }
 
@@ -82,8 +82,8 @@ class AgendaController extends Controller
     ]);
 
     $appointment->update([
-        'DATE_RECOLECTION' => $request->date_recolection,
-        'USER_MESSAGE'     => $request->user_message,
+        'DATE_RECOLECTION' => $request->DATE_RECOLECTION,
+        'USER_MESSAGE'     => $request->USER_MESSAGE,
     ]);
 
     return redirect()
