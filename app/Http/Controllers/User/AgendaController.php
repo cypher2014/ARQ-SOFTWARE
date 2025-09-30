@@ -77,8 +77,8 @@ class AgendaController extends Controller
     }
 
     $request->validate([
-        'date_recolection' => 'required|date',
-        'user_message'     => 'nullable|string|max:500',
+        'DATE_RECOLECTION' => 'required|date',
+        'USER_MESSAGE'     => 'nullable|string|max:500',
     ]);
 
     $appointment->update([

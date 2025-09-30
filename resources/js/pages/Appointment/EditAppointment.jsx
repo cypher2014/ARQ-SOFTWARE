@@ -6,52 +6,91 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function EditAppointment({ appointment }) {
+    // Formatear la fecha para el input datetime-local (yyyy-MM-ddTHH:mm)
+    const formattedDate = appointment.DATE_RECOLECTION
+        ? appointment.DATE_RECOLECTION.replace(' ', 'T').slice(0, 16)
+        : '';
+
     const { data, setData, put, processing, errors } = useForm({
-        date_recolection: appointment.date_recolection || '',
-        user_message: appointment.user_message || '',
+        DATE_RECOLECTION: formattedDate,
+        USER_MESSAGE: appointment.USER_MESSAGE || '',
         status_recolection: appointment.status_recolection || 'pendiente',
     });
 
     const submit = (e) => {
         e.preventDefault();
-        put(route('appointment.update', appointment.id_agenda));
+
+        // Reconstruir fecha para enviar a Laravel en formato yyyy-MM-dd HH:mm:ss
+        const sendData = {
+            ...data,
+            DATE_RECOLECTION: data.DATE_RECOLECTION ? data.DATE_RECOLECTION.replace('T', ' ') + ':00' : null,
+        };
+
+        put(route('appointment.update', appointment.id_agenda), {
+            data: sendData,
+            preserveScroll: true,
+            onSuccess: () => {
+                console.log('Solicitud actualizada correctamente');
+            },
+            onError: (errors) => {
+                console.error('Errores al actualizar:', errors);
+            },
+        });
     };
 
     return (
         <AuthenticatedLayout>
             <Head title="Editar Solicitud" />
 
-            <form onSubmit={submit} className="space-y-5 max-w-xl mx-auto p-6 bg-white shadow rounded-lg">
-                <h1 className="text-center text-xl font-bold">Editar Solicitud de Recolección</h1>
+            <form
+                onSubmit={submit}
+                className="space-y-5 max-w-xl mx-auto p-6 bg-white shadow rounded-lg"
+            >
+                <h1 className="text-center text-xl font-bold">
+                    Editar Solicitud de Recolección
+                </h1>
 
                 <div>
-                    <InputLabel htmlFor="date_recolection" value="Fecha y Hora de Recolección" />
+                    <InputLabel
+                        htmlFor="DATE_RECOLECTION"
+                        value="Fecha y Hora de Recolección"
+                    />
                     <TextInput
-                        id="date_recolection"
+                        id="DATE_RECOLECTION"
                         type="datetime-local"
-                        name="date_recolection"
-                        value={data.date_recolection}
+                        name="DATE_RECOLECTION"
+                        value={data.DATE_RECOLECTION}
                         className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400"
-                        onChange={(e) => setData('date_recolection', e.target.value)}
+                        onChange={(e) => setData('DATE_RECOLECTION', e.target.value)}
                         required
                     />
-                    <InputError message={errors.date_recolection} className="mt-2" />
+                    <InputError
+                        message={errors.DATE_RECOLECTION}
+                        className="mt-2"
+                    />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="user_message" value="Mensaje (Opcional)" />
+                    <InputLabel htmlFor="USER_MESSAGE" value="Mensaje (Opcional)" />
                     <textarea
-                        id="user_message"
-                        name="user_message"
-                        value={data.user_message}
+                        id="USER_MESSAGE"
+                        name="USER_MESSAGE"
+                        value={data.USER_MESSAGE}
                         className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400"
                         rows="3"
-                        onChange={(e) => setData('user_message', e.target.value)}
+                        onChange={(e) => setData('USER_MESSAGE', e.target.value)}
                     />
-                    <InputError message={errors.user_message} className="mt-2" />
+                    <InputError
+                        message={errors.USER_MESSAGE}
+                        className="mt-2"
+                    />
                 </div>
 
-                <input type="hidden" name="status_recolection" value={data.status_recolection} />
+                <input
+                    type="hidden"
+                    name="status_recolection"
+                    value={data.status_recolection}
+                />
 
                 <div className="mt-6 flex justify-end">
                     <PrimaryButton
@@ -65,3 +104,5 @@ export default function EditAppointment({ appointment }) {
         </AuthenticatedLayout>
     );
 }
+
+
