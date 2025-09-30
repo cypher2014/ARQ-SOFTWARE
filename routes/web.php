@@ -10,6 +10,9 @@ use App\Http\Controllers\Auth\LoginAdminController;
 use App\Http\Controllers\Auth\RegisterAdminController;
 use App\Http\Middleware\AdmonAuth;
 
+use App\Http\Controllers\Materials;
+use App\Http\Controllers\MaterialsQuantityController;
+
 /*
 |--------------------------------------------------------------------------
 | Rutas públicas
@@ -87,6 +90,21 @@ Route::delete('/gestores/{id}', [RegisterAdminController::class, 'destroy'])
         Route::middleware([AdmonAuth::class])->group(function () {
             Route::get('dashboard', [LoginAdminController::class, 'adminDashboard'])->name('dashboard');
         });
+    });
+
+
+
+    Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['auth', 'admonAuth'])
+    ->group(function () {
+        // CRUD de materiales
+        Route::get('materials', [Materials::class, 'index'])->name('materials.index');
+        Route::post('materials', [Materials::class, 'store'])->name('materials.store');
+        Route::delete('materials/{id}', [Materials::class, 'destroy'])->name('materials.destroy');
+
+        // Cantidad de materiales
+        Route::get('materials/quantity', [MaterialsQuantityController::class, 'index'])->name('materials.quantity');
     });
 
 

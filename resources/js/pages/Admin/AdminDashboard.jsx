@@ -1,12 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Head, usePage } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia"; // Import correcto
 import Cookies from "js-cookie";
 import { Card, CardContent } from "@/Components/ui/card";
-import { FaRecycle, FaBox, FaTrash, FaRegFileAlt, FaRegClipboard } from "react-icons/fa";
+import {
+  FaRecycle,
+  FaBox,
+  FaTrash,
+  FaRegFileAlt,
+  FaRegClipboard,
+  FaPlus,
+  FaChartBar,
+} from "react-icons/fa";
+import { Inertia } from "@inertiajs/inertia";
+import ModalCrearMaterial from "@/Pages/Materials/ModalCrearMaterial";
 
 export default function AdminDashboard() {
   const { auth, topMaterials } = usePage().props;
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     if (auth?.user?.ID_USERS) {
@@ -14,12 +24,10 @@ export default function AdminDashboard() {
     }
   }, [auth]);
 
-  // Construir nombre completo
   const fullName = auth?.user
     ? `${auth.user.name_user ?? ""} ${auth.user.last_name ?? ""}`.trim()
     : "Administrador";
 
-  // Iconos para cada material
   const materialIcons = {
     Papel: <FaRegFileAlt size={24} className="text-blue-500" />,
     Cartón: <FaRegClipboard size={24} className="text-yellow-500" />,
@@ -28,13 +36,12 @@ export default function AdminDashboard() {
     Vidrio: <FaBox size={24} className="text-cyan-500" />,
   };
 
-  // Función de logout corregida
   const handleLogout = (e) => {
     e.preventDefault();
     Inertia.post(route("admin.logout"), {}, {
       onFinish: () => {
-        Cookies.remove("admin_id"); // eliminar cookie
-        window.location.href = route("admin.login"); // recarga completa al login
+        Cookies.remove("admin_id");
+        window.location.href = route("admin.login");
       },
     });
   };
@@ -42,7 +49,6 @@ export default function AdminDashboard() {
   return (
     <>
       <Head title="Panel de Administrador" />
-
       <div className="max-w-7xl mx-auto p-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
@@ -58,22 +64,39 @@ export default function AdminDashboard() {
         </div>
 
         {/* Panel de administración */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <Card className="cursor-pointer hover:shadow-lg transition rounded-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+          {/* Ver solicitudes */}
+          <Card
+            className="cursor-pointer hover:shadow-lg transition rounded-2xl"
+            onClick={() => (window.location.href = route("appointment.index"))}
+          >
             <CardContent className="p-6 text-center font-semibold">
               📑 Ver Solicitudes
             </CardContent>
           </Card>
 
+          {/* Ver rutas */}
           <Card className="cursor-pointer hover:shadow-lg transition rounded-2xl">
             <CardContent className="p-6 text-center font-semibold">
               🛣️ Ver Rutas
             </CardContent>
           </Card>
 
+          {/* Inventario */}
           <Card className="cursor-pointer hover:shadow-lg transition rounded-2xl">
             <CardContent className="p-6 text-center font-semibold">
               📦 Inventario
+            </CardContent>
+          </Card>
+
+          {/* Crear material */}
+          <Card
+            className="cursor-pointer hover:shadow-lg transition rounded-2xl"
+            onClick={() => setOpenModal(true)}
+          >
+            <CardContent className="p-6 text-center font-semibold">
+              <FaPlus className="mx-auto mb-2" />
+              Crear Material
             </CardContent>
           </Card>
         </div>
@@ -83,7 +106,6 @@ export default function AdminDashboard() {
           <h2 className="text-xl font-bold text-gray-700 mb-4">
             Materiales más recolectados
           </h2>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {(topMaterials ?? [
               { name: "Papel", total: 120 },
@@ -97,7 +119,9 @@ export default function AdminDashboard() {
                 className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1"
               >
                 <div className="mb-3">
-                  {materialIcons[mat.name] ?? <FaRecycle size={24} className="text-gray-400" />}
+                  {materialIcons[mat.name] ?? (
+                    <FaRecycle size={24} className="text-gray-400" />
+                  )}
                 </div>
                 <span className="text-lg font-semibold">{mat.name}</span>
                 <span className="text-gray-600 mt-1">{mat.total} kg</span>
@@ -106,9 +130,27 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Modal de creación */}
+      {openModal && (
+        <ModalCrearMaterial
+          onClose={() => {
+            setOpenModal(false);
+            window.location.reload(); // recarga para actualizar lista de materiales
+          }}
+        />
+      )}
     </>
   );
 }
+
+
+
+
+
+
+
+
 
 
 
