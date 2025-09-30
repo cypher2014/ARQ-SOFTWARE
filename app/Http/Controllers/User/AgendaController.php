@@ -27,16 +27,16 @@ class AgendaController extends Controller
     {
         // Validar campos según tu modelo
         $request->validate([
-            'DATE_RECOLECTION' => 'required|date',
-            'USER_MESSAGE'     => 'nullable|string|max:500',
+            'date_recolection' => 'required|date',
+            'user_message'     => 'nullable|string|max:500',
         ]);
 
         // Crear registro en la tabla "agenda"
         Agenda::create([
-            'ID_USER'            => Auth::id(), 
-            'DATE_RECOLECTION'   => $request->DATE_RECOLECTION,
-            'STATUS_RECOLECTION' => 'pendiente',
-            'USER_MESSAGE'       => $request->USER_MESSAGE,
+            'id_user'            => Auth::id(), 
+            'date_recolection'   => $request->date_recolection,
+            'status_recolection' => 'pendiente',
+            'user_message'       => $request->user_message,
         ]);
 
         return redirect()->route('dashboard')
@@ -48,8 +48,8 @@ class AgendaController extends Controller
      */
     public function index(): Response
     {
-        $appointment = Agenda::where('ID_USER', Auth::id())
-            ->orderByDesc('DATE_RECOLECTION')
+        $appointment = Agenda::where('id_user', Auth::id())
+            ->orderByDesc('date_recolection')
             ->get();
 
         return Inertia::render('Appointment/AppointmentList', [
@@ -82,8 +82,8 @@ class AgendaController extends Controller
     ]);
 
     $appointment->update([
-        'DATE_RECOLECTION' => $request->DATE_RECOLECTION,
-        'USER_MESSAGE'     => $request->USER_MESSAGE,
+        'date_recolection' => $request->date_recolection,
+        'user_message'     => $request->user_message,
     ]);
 
     return redirect()
@@ -94,7 +94,7 @@ class AgendaController extends Controller
 
     public function show(Agenda $appointment)
     {
-        if ($appointment->ID_USER !== Auth::id()) {
+        if ($appointment->id_user !== Auth::id()) {
             abort(403, 'No autorizado');
         }
 

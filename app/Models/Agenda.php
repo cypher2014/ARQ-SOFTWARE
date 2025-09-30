@@ -10,25 +10,25 @@ class Agenda extends Model
     use HasFactory;
 
     protected $table = 'agenda';
-    protected $primaryKey = 'ID_AGENDA';
+    protected $primaryKey = 'id_agenda';
     public $timestamps = true;
 
     protected $fillable = [
-        'ID_USER',
-        'DATE_RECOLECTION',
-        'STATUS_RECOLECTION',
-        'USER_MESSAGE',
+        'id_user',
+        'date_recolection',
+        'status_recolection',
+        'user_message',
     ];
 
 
     // Relaciones
     public function user()
     {
-        return $this->belongsTo(User::class, 'ID_USER', 'ID_USER');
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 
     public function recolections()
     {
-        return $this->hasMany(Recolection::class, 'ID_AGENDA', 'ID_AGENDA');
+        return $this->hasMany(Recolection::class, 'id_agenda', 'id_agenda');
     }
 }
