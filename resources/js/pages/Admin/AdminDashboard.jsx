@@ -37,7 +37,7 @@ export default function AdminDashboard() {
                     <h1 className="text-3xl font-bold text-gray-800">
                         Bienvenido, {fullName}
                     </h1>
-                    <form method="POST" action={route("admin/logout")}>
+                    <form method="POST" action={route("admin.logout")}>
                         <button
                             type="submit"
                             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
